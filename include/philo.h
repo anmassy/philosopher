@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/05/30 16:45:24 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/06/23 11:20:08 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 typedef struct s_philo
 {
 	int				pos;
-	int				count; //nombre de fois qu'il a mange
+	int				count;
 	int				stop;
 	long int		last_eat;
 	struct s_data	*arg;
@@ -48,10 +48,12 @@ typedef struct s_data
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
-	int				n_eat; //nombre de fois qu'il doit manger
+	int				n_eat;
 	long int		t_start;
 	t_philo			*philo;
 	pthread_mutex_t	writing;
+	pthread_mutex_t	m_eat;
+	// pthread_mutex_t	m_stop;
 	}	t_data;
 
 /* check.c */
@@ -65,7 +67,7 @@ int			init_philo(t_data *d);
 int			create_thread(t_data *d);
 
 /* routine.c */
-int	dead(t_philo *philo);
+int			dead(t_philo *philo);
 void		writen(t_philo *philo, char *msg);
 void		forkette(t_philo *philo);
 void		eating(t_philo *philo);

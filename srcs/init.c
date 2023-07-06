@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/05/30 17:31:58 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/06/23 13:23:43 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ int	init_mutex(t_data *d)
 {
 	if (pthread_mutex_init(&d->writing, NULL) != 0)
 		return (0);
+	if (pthread_mutex_init(&d->m_eat, NULL) != 0)
+		return (0);
+	// if (pthread_mutex_init(&d->m_stop, NULL) != 0)
+	// 	return (0);
 	return (1);
 }
 

@@ -6,11 +6,26 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:32:35 by anmassy           #+#    #+#             */
-/*   Updated: 2023/05/29 16:41:16 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/06/28 10:42:47 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+void ft_destroy(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	while (i < d->n_philo)
+	{
+		pthread_mutex_destroy(&d->philo[i].lfork);
+		pthread_mutex_destroy(d->philo[i].rfork);
+		i++;
+	}
+	pthread_mutex_destroy(&d->writing);
+	pthread_mutex_destroy(&d->m_eat);
+}
 
 int	main(int ac, char **av)
 {
@@ -26,5 +41,6 @@ int	main(int ac, char **av)
 		return (0);
 	if (!init_philo(&d))
 		return (0);
+	ft_destroy(&d);
 	return (0);
 }
