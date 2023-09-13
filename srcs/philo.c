@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aniezgod <aniezgod@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:32:35 by anmassy           #+#    #+#             */
-/*   Updated: 2023/06/28 10:42:47 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/12 19:09:22 by aniezgod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void ft_destroy(t_data *d)
 	}
 	pthread_mutex_destroy(&d->writing);
 	pthread_mutex_destroy(&d->m_eat);
+	pthread_mutex_destroy(&d->m_stop);
+	pthread_mutex_destroy(&d->dead);
 }
 
 int	main(int ac, char **av)

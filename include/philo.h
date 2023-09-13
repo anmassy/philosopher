@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aniezgod <aniezgod@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/06/23 11:20:08 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/12 19:23:25 by aniezgod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_philo
 {
 	int				pos;
 	int				count;
-	int				stop;
 	long int		last_eat;
 	struct s_data	*arg;
 	pthread_t		thread;
@@ -44,6 +43,8 @@ typedef struct s_philo
 
 typedef struct s_data
 {
+	int				stop;
+	int				value;
 	int				n_philo;
 	int				t_die;
 	int				t_eat;
@@ -53,7 +54,8 @@ typedef struct s_data
 	t_philo			*philo;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	m_eat;
-	// pthread_mutex_t	m_stop;
+	pthread_mutex_t m_stop;
+	pthread_mutex_t dead;
 	}	t_data;
 
 /* check.c */
@@ -67,7 +69,7 @@ int			init_philo(t_data *d);
 int			create_thread(t_data *d);
 
 /* routine.c */
-int			dead(t_philo *philo);
+void		dead(t_philo *philo);
 void		writen(t_philo *philo, char *msg);
 void		forkette(t_philo *philo);
 void		eating(t_philo *philo);
