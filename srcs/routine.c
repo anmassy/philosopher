@@ -6,13 +6,13 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/13 11:37:18 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/13 13:00:46 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int condition(t_philo *philo, int val)
+int	condition(t_philo *philo, int val)
 {
 	pthread_mutex_lock(&philo->arg->dead);
 	if (val)
@@ -23,15 +23,15 @@ int condition(t_philo *philo, int val)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->arg->dead);
-	return (0);	
+	return (0);
 }
 
 void	dead(t_philo *philo)
 {
-	//ft_usleep(philo->arg->t_die + 1);
 	pthread_mutex_lock(&philo->arg->m_eat);
 	pthread_mutex_lock(&philo->arg->m_stop);
-	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die) || philo->arg->n_philo == 1)
+	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die)
+		|| philo->arg->n_philo == 1)
 	{
 		pthread_mutex_unlock(&philo->arg->m_eat);
 		pthread_mutex_unlock(&philo->arg->m_stop);
@@ -40,14 +40,6 @@ void	dead(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->arg->m_eat);
 	pthread_mutex_unlock(&philo->arg->m_stop);
-}
-
-void	writen(t_philo *philo, char *msg)
-{
-	pthread_mutex_lock(&philo->arg->writing);
-	if (!philo->arg->value && timer() - philo->arg->t_start && !condition(philo, 0))
-		printf("%ld %d %s\n", timer() - philo->arg->t_start, philo->pos, msg);
-	pthread_mutex_unlock(&philo->arg->writing);
 }
 
 void	forkette(t_philo *philo)
@@ -68,8 +60,8 @@ void	eating(t_philo *philo)
 	writen(philo, "is eating");
 	pthread_mutex_lock(&philo->arg->m_eat);
 	philo->last_eat = timer();
-	pthread_mutex_unlock(&philo->arg->m_eat);
 	philo->count++;
+	pthread_mutex_unlock(&philo->arg->m_eat);
 	ft_usleep(philo->arg->t_eat);
 	pthread_mutex_unlock(philo->rfork);
 	pthread_mutex_unlock(&philo->lfork);
@@ -77,7 +69,6 @@ void	eating(t_philo *philo)
 	ft_usleep(philo->arg->t_sleep);
 	writen(philo, "is thinking");
 }
-
 
 void	*routine(void *ph)
 {
@@ -90,16 +81,19 @@ void	*routine(void *ph)
 	{
 		forkette(philo);
 		eating(philo);
+		dead(philo);
 		if (philo->count == philo->arg->n_eat)
 		{
+			pthread_mutex_lock(&philo->arg->m_stop);
 			if (++philo->arg->stop == philo->arg->n_philo)
 			{
+				pthread_mutex_unlock(&philo->arg->m_stop);
 				writen(philo, "FINISH");
 				condition(philo, 2);
 			}
+			pthread_mutex_unlock(&philo->arg->m_stop);
 			return (NULL);
 		}
-		dead(philo);
 	}
 	return (NULL);
 }

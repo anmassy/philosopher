@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aniezgod <aniezgod@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/12 19:08:55 by aniezgod         ###   ########.fr       */
+/*   Updated: 2023/09/13 12:20:51 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	init_mutex(t_data *d)
 		return (0);
 	if (pthread_mutex_init(&d->m_eat, NULL) != 0)
 		return (0);
-	 if (pthread_mutex_init(&d->m_stop, NULL) != 0)
-	 	return (0);
+	if (pthread_mutex_init(&d->m_stop, NULL) != 0)
+	// 	return (0);
 	if (pthread_mutex_init(&d->dead, NULL) != 0)
-	 	return (0);
+		return (0);
 	return (1);
 }
 
@@ -39,6 +39,20 @@ int	init_val(t_data *d, char **av)
 		d->n_eat = ft_atoi(av[5]);
 	if (d->n_philo < 1 || d->t_die <= 0 || d->t_eat <= 0 || d->t_sleep <= 0)
 		return (0);
+	return (1);
+}
+
+int	join_philo(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	while (i < d->n_philo)
+	{
+		if (pthread_join(d->philo[i].thread, NULL) != 0)
+			return (0);
+		i++;
+	}
 	return (1);
 }
 
@@ -61,16 +75,11 @@ int	init_philo(t_data *d)
 			d->philo[i].rfork = &(d->philo[0].lfork);
 		else
 			d->philo[i].rfork = &(d->philo[i + 1].lfork);
-		if (pthread_create(&d->philo[i].thread, NULL, &routine, &(d->philo[i])) != 0)
+		if (pthread_create(&d->philo[i].thread, NULL, &routine, &(d->philo[i])))
 			return (0);
 		i++;
 	}
-	i = 0;
-	while (i < d->n_philo)
-	{
-		if (pthread_join(d->philo[i].thread, NULL) != 0)
-			return (0);
-		i++;
-	}
+	if (!join_philo(d))
+		return (0);
 	return (1);
 }
