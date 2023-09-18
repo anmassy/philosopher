@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/13 13:00:46 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/18 15:21:41 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	forkette(t_philo *philo)
 	writen(philo, "has taken a fork");
 	if (philo->arg->n_philo == 1)
 	{
-		ft_usleep(philo->arg->t_die * 2);
+		ft_usleep(philo->arg->t_die);
+		dead(philo);
 		return ;
 	}
 	pthread_mutex_lock(philo->rfork);
@@ -85,10 +86,11 @@ void	*routine(void *ph)
 		if (philo->count == philo->arg->n_eat)
 		{
 			pthread_mutex_lock(&philo->arg->m_stop);
-			if (++philo->arg->stop == philo->arg->n_philo)
+			if (philo->arg->n_philo != 1
+				&& ++philo->arg->stop == philo->arg->n_philo)
 			{
 				pthread_mutex_unlock(&philo->arg->m_stop);
-				writen(philo, "FINISH");
+				printf("Everyone is eating !");
 				condition(philo, 2);
 			}
 			pthread_mutex_unlock(&philo->arg->m_stop);

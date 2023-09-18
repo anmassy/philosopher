@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:32:35 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/13 12:08:10 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/18 15:21:53 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	writen(t_philo *philo, char *msg)
 
 	pthread_mutex_lock(&philo->arg->writing);
 	time = timer() - philo->arg->t_start;
-	if (!philo->arg->value && time && !condition(philo, 0))
+	if (!philo->arg->value && time >= 0 && time <= INT_MAX
+		&& !condition(philo, 0))
 		printf("%ld %d %s\n", time, philo->pos, msg);
 	pthread_mutex_unlock(&philo->arg->writing);
 }
