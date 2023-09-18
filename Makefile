@@ -6,7 +6,7 @@
 #    By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/26 10:27:35 by anmassy           #+#    #+#              #
-#    Updated: 2023/05/29 11:21:25 by anmassy          ###   ########.fr        #
+#    Updated: 2023/09/18 16:19:11 by anmassy          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ = $(SRC:.c=.o)
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 INCS = -I ./include
 

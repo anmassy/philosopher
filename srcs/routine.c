@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/18 15:21:41 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:23:08 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	forkette(t_philo *philo)
 	writen(philo, "has taken a fork");
 	if (philo->arg->n_philo == 1)
 	{
+		pthread_mutex_unlock(&philo->lfork);
 		ft_usleep(philo->arg->t_die);
 		dead(philo);
 		return ;
