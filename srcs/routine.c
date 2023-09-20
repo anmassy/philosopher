@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/18 16:23:08 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:33:40 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ void	dead(t_philo *philo)
 	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die)
 		|| philo->arg->n_philo == 1)
 	{
-		pthread_mutex_unlock(&philo->arg->m_eat);
 		pthread_mutex_unlock(&philo->arg->m_stop);
+		pthread_mutex_unlock(&philo->arg->m_eat);
 		writen(philo, "is dead");
 		condition(philo, 1);
+		return ;
 	}
-	pthread_mutex_unlock(&philo->arg->m_eat);
 	pthread_mutex_unlock(&philo->arg->m_stop);
+	pthread_mutex_unlock(&philo->arg->m_eat);
 }
 
 void	forkette(t_philo *philo)
@@ -48,7 +49,6 @@ void	forkette(t_philo *philo)
 	writen(philo, "has taken a fork");
 	if (philo->arg->n_philo == 1)
 	{
-		pthread_mutex_unlock(&philo->lfork);
 		ft_usleep(philo->arg->t_die);
 		dead(philo);
 		return ;
@@ -57,16 +57,17 @@ void	forkette(t_philo *philo)
 	writen(philo, "has taken a fork");
 }
 
+
 void	eating(t_philo *philo)
 {
 	writen(philo, "is eating");
 	pthread_mutex_lock(&philo->arg->m_eat);
 	philo->last_eat = timer();
-	philo->count++;
 	pthread_mutex_unlock(&philo->arg->m_eat);
-	ft_usleep(philo->arg->t_eat);
+	philo->count++;
 	pthread_mutex_unlock(philo->rfork);
 	pthread_mutex_unlock(&philo->lfork);
+	ft_usleep(philo->arg->t_eat);
 	writen(philo, "is sleeping");
 	ft_usleep(philo->arg->t_sleep);
 	writen(philo, "is thinking");
@@ -93,6 +94,7 @@ void	*routine(void *ph)
 				pthread_mutex_unlock(&philo->arg->m_stop);
 				printf("Everyone is eating !");
 				condition(philo, 2);
+				return (NULL);
 			}
 			pthread_mutex_unlock(&philo->arg->m_stop);
 			return (NULL);

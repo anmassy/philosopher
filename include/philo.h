@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/18 16:15:26 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:18:53 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct s_philo
 	long int		last_eat;
 	struct s_data	*arg;
 	pthread_t		thread;
-	pthread_mutex_t	*rfork;
 	pthread_mutex_t	lfork;
+	pthread_mutex_t	*rfork;
 }	t_philo;
 
 typedef struct s_data
@@ -53,8 +53,8 @@ typedef struct s_data
 	long int		t_start;
 	t_philo			*philo;
 	pthread_mutex_t	writing;
-	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_stop;
+	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
 }	t_data;
 
