@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/20 15:33:40 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/23 19:13:18 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ void	eating(t_philo *philo)
 	writen(philo, "is eating");
 	pthread_mutex_lock(&philo->arg->m_eat);
 	philo->last_eat = timer();
-	pthread_mutex_unlock(&philo->arg->m_eat);
 	philo->count++;
+	pthread_mutex_unlock(&philo->arg->m_eat);
+	ft_usleep(philo->arg->t_eat);
 	pthread_mutex_unlock(philo->rfork);
 	pthread_mutex_unlock(&philo->lfork);
-	ft_usleep(philo->arg->t_eat);
 	writen(philo, "is sleeping");
 	ft_usleep(philo->arg->t_sleep);
 	writen(philo, "is thinking");
