@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/20 15:18:53 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/23 19:58:12 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void		*routine(void *ph);
 
 /* utils.c */
 int			ft_strlen(char *s);
-void		*ft_memset(void *s, int c, int n);
 int			ft_atoi(char *s);
 long int	timer(void);
 void		ft_usleep(int ms);

@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:13:18 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/23 19:58:02 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	dead(t_philo *philo)
 
 void	forkette(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->lfork);
+	if (!(philo->pos % 2))
+		pthread_mutex_lock(&philo->lfork);
 	writen(philo, "has taken a fork");
 	if (philo->arg->n_philo == 1)
 	{
@@ -54,6 +55,8 @@ void	forkette(t_philo *philo)
 		return ;
 	}
 	pthread_mutex_lock(philo->rfork);
+	if ((philo->pos % 2))
+		pthread_mutex_lock(&philo->lfork);
 	writen(philo, "has taken a fork");
 }
 
@@ -66,8 +69,11 @@ void	eating(t_philo *philo)
 	philo->count++;
 	pthread_mutex_unlock(&philo->arg->m_eat);
 	ft_usleep(philo->arg->t_eat);
+	if ((philo->pos % 2))
+		pthread_mutex_unlock(&philo->lfork);
 	pthread_mutex_unlock(philo->rfork);
-	pthread_mutex_unlock(&philo->lfork);
+	if (!(philo->pos % 2))
+		pthread_mutex_unlock(&philo->lfork);
 	writen(philo, "is sleeping");
 	ft_usleep(philo->arg->t_sleep);
 	writen(philo, "is thinking");

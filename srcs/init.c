@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:15:38 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/23 19:51:02 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,13 @@ int	join_philo(t_data *d)
 	i = 0;
 	while (i < d->n_philo)
 	{
-		if (pthread_create(&d->philo[i].thread, NULL, &routine, &(d->philo[i])))
+		if (pthread_create(&d->philo[i].thread, NULL, routine, &(d->philo[i])))
 			return (0);
+		i++;
+	}
+	i = 0;
+	while (i < d->n_philo)
+	{
 		if (pthread_join(d->philo[i].thread, NULL) != 0)
 			return (0);
 		i++;

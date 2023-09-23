@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:07:23 by anmassy           #+#    #+#             */
-/*   Updated: 2023/05/28 14:19:19 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/23 19:29:32 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,6 @@ int	ft_strlen(char *s)
 	while (s[i])
 		i++;
 	return (i);
-}
-
-void	*ft_memset(void *s, int c, int n)
-{
-	int				i;
-	unsigned char	*str;
-
-	i = 0;
-	str = (unsigned char *)s;
-	while (i < n)
-	{
-		str[i] = (unsigned char)c;
-		i++;
-	}
-	return (str);
 }
 
 int	ft_atoi(char *s)
