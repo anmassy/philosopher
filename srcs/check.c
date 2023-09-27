@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:59:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/05/28 12:05:28 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 11:00:04 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_overflow(char *arg)
 	int	temp;
 
 	temp = ft_atoi(arg);
-	if ((temp >= -2147483648 || temp <= 2147483647) && ft_strlen(arg) < 12)
+	if ((temp > -2147483648 || temp <= 2147483647) && ft_strlen(arg) < 12)
 		return (1);
 	return (0);
 }

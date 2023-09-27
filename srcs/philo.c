@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:32:35 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:29:20 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:24:43 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	writen(t_philo *philo, char *msg)
 
 	pthread_mutex_lock(&philo->arg->writing);
 	time = timer() - philo->arg->t_start;
-	if (!philo->arg->value && time >= 0 && time <= INT_MAX
+	if (!philo->arg->exit_val && time >= 0 && time <= INT_MAX
 		&& !condition(philo, 0))
 		printf("%ld %d %s\n", time, philo->pos, msg);
 	pthread_mutex_unlock(&philo->arg->writing);
@@ -28,17 +28,14 @@ void	ft_destroy(t_data *d)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	while (++i < d->n_philo)
-	{
-		pthread_mutex_destroy(d->philo[i].rfork);
-		pthread_mutex_destroy(&d->philo[i].lfork);
-	}
-	free(d->philo);
-	pthread_mutex_destroy(&d->dead);
-	pthread_mutex_destroy(&d->m_eat);
-	pthread_mutex_destroy(&d->m_stop);
+		pthread_join(d->philo[i].thread, NULL);
 	pthread_mutex_destroy(&d->writing);
+	i = -1;
+	while (++i < d->n_philo)
+		pthread_mutex_destroy(&d->philo[i].lfork);
+	free(d->philo);
 }
 
 int	main(int ac, char **av)
@@ -52,7 +49,7 @@ int	main(int ac, char **av)
 	d.philo = malloc(sizeof(t_philo) * d.n_philo);
 	if (!d.philo)
 		return (0);
-	if (!init_philo(&d))
+	if (!init_philo(&d) || !create_philo(&d))
 		return (0);
 	ft_destroy(&d);
 	return (0);

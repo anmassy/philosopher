@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:58:12 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:33:10 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,29 @@
 typedef struct s_philo
 {
 	int				pos;
-	int				count;
+	int				count_eat;
 	long int		last_eat;
-	struct s_data	*arg;
 	pthread_t		thread;
 	pthread_mutex_t	lfork;
 	pthread_mutex_t	*rfork;
+	struct s_data	*arg;
 }	t_philo;
 
 typedef struct s_data
 {
-	int				stop;
-	int				value;
 	int				n_philo;
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
 	int				n_eat;
 	long int		t_start;
-	t_philo			*philo;
+	int				exit_val;
+	int				stop;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
+	t_philo			*philo;
 }	t_data;
 
 /* check.c */
@@ -65,15 +65,16 @@ int			check_arg(char **av);
 /* init.c */
 int			init_mutex(t_data *d);
 int			init_val(t_data *d, char **av);
-int			join_philo(t_data *d);
 int			init_philo(t_data *d);
+int			create_philo(t_data *d);
+void		*start_dinner(void *ph);
 
 /* routine.c */
 int			condition(t_philo *philo, int val);
-void		dead(t_philo *philo);
-void		forkette(t_philo *philo);
-void		eating(t_philo *philo);
-void		*routine(void *ph);
+void		check_death(t_philo *philo);
+void		eat_time(t_philo *philo);
+void		sleep_think(t_philo *philo);
+void		routine(t_philo	*philo);
 
 /* utils.c */
 int			ft_strlen(char *s);

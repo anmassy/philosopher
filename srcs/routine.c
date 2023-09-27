@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:58:02 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:33:21 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	condition(t_philo *philo, int val)
 {
 	pthread_mutex_lock(&philo->arg->dead);
 	if (val)
-		philo->arg->value = 1;
-	if (philo->arg->value)
+		philo->arg->exit_val = val;
+	if (philo->arg->exit_val)
 	{
 		pthread_mutex_unlock(&philo->arg->dead);
 		return (1);
@@ -26,24 +26,37 @@ int	condition(t_philo *philo, int val)
 	return (0);
 }
 
-void	dead(t_philo *philo)
+void	check_death(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->arg->m_eat);
 	pthread_mutex_lock(&philo->arg->m_stop);
 	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die)
 		|| philo->arg->n_philo == 1)
 	{
-		pthread_mutex_unlock(&philo->arg->m_stop);
-		pthread_mutex_unlock(&philo->arg->m_eat);
 		writen(philo, "is dead");
 		condition(philo, 1);
-		return ;
 	}
 	pthread_mutex_unlock(&philo->arg->m_stop);
 	pthread_mutex_unlock(&philo->arg->m_eat);
 }
 
-void	forkette(t_philo *philo)
+void	eat_time(t_philo *philo)
+{
+	writen(philo, "is eating");
+	pthread_mutex_lock(&philo->arg->m_eat);
+	philo->last_eat = timer();
+	pthread_mutex_unlock(&philo->arg->m_eat);
+	ft_usleep(philo->arg->t_eat);
+}
+
+void	sleep_think(t_philo *philo)
+{
+	writen(philo, "is sleeping");
+	ft_usleep(philo->arg->t_sleep);
+	writen(philo, "is thinking");
+}
+
+void	routine(t_philo *philo)
 {
 	if (!(philo->pos % 2))
 		pthread_mutex_lock(&philo->lfork);
@@ -51,60 +64,18 @@ void	forkette(t_philo *philo)
 	if (philo->arg->n_philo == 1)
 	{
 		ft_usleep(philo->arg->t_die);
-		dead(philo);
 		return ;
 	}
 	pthread_mutex_lock(philo->rfork);
 	if ((philo->pos % 2))
 		pthread_mutex_lock(&philo->lfork);
 	writen(philo, "has taken a fork");
-}
-
-
-void	eating(t_philo *philo)
-{
-	writen(philo, "is eating");
-	pthread_mutex_lock(&philo->arg->m_eat);
-	philo->last_eat = timer();
-	philo->count++;
-	pthread_mutex_unlock(&philo->arg->m_eat);
-	ft_usleep(philo->arg->t_eat);
+	eat_time(philo);
 	if ((philo->pos % 2))
 		pthread_mutex_unlock(&philo->lfork);
 	pthread_mutex_unlock(philo->rfork);
 	if (!(philo->pos % 2))
 		pthread_mutex_unlock(&philo->lfork);
-	writen(philo, "is sleeping");
-	ft_usleep(philo->arg->t_sleep);
-	writen(philo, "is thinking");
+	sleep_think(philo);
 }
 
-void	*routine(void *ph)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)ph;
-	if (philo->pos % 2 == 0)
-		ft_usleep(philo->arg->t_eat / 10);
-	while (!condition(philo, 0))
-	{
-		forkette(philo);
-		eating(philo);
-		dead(philo);
-		if (philo->count == philo->arg->n_eat)
-		{
-			pthread_mutex_lock(&philo->arg->m_stop);
-			if (philo->arg->n_philo != 1
-				&& ++philo->arg->stop == philo->arg->n_philo)
-			{
-				pthread_mutex_unlock(&philo->arg->m_stop);
-				printf("Everyone is eating !");
-				condition(philo, 2);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&philo->arg->m_stop);
-			return (NULL);
-		}
-	}
-	return (NULL);
-}

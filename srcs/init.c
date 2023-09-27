@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:51:02 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 16:35:55 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,18 @@ int	init_val(t_data *d, char **av)
 {
 	if (!init_mutex(d))
 		return (0);
-	d->value = 0;
-	d->stop = 0;
 	d->n_philo = ft_atoi(av[1]);
 	d->t_die = ft_atoi(av[2]);
 	d->t_eat = ft_atoi(av[3]);
 	d->t_sleep = ft_atoi(av[4]);
 	if (av[5])
+	{
 		d->n_eat = ft_atoi(av[5]);
+		if (d->n_eat <= 0)
+			return(0);
+	}
 	if (d->n_philo < 1 || d->t_die <= 0 || d->t_eat <= 0 || d->t_sleep <= 0)
 		return (0);
-	return (1);
-}
-
-int	join_philo(t_data *d)
-{
-	int	i;
-
-	i = 0;
-	while (i < d->n_philo)
-	{
-		if (pthread_create(&d->philo[i].thread, NULL, routine, &(d->philo[i])))
-			return (0);
-		i++;
-	}
-	i = 0;
-	while (i < d->n_philo)
-	{
-		if (pthread_join(d->philo[i].thread, NULL) != 0)
-			return (0);
-		i++;
-	}
 	return (1);
 }
 
@@ -68,11 +49,13 @@ int	init_philo(t_data *d)
 	int	i;
 
 	d->t_start = timer();
+	d->exit_val = 0;
+	d->stop = 0;
 	i = 0;
 	while (i < d->n_philo)
 	{
 		d->philo[i].pos = i + 1;
-		d->philo[i].count = 0;
+		d->philo[i].count_eat = 0;
 		d->philo[i].last_eat = 0;
 		d->philo[i].arg = d;
 		d->philo[i].rfork = NULL;
@@ -84,7 +67,48 @@ int	init_philo(t_data *d)
 			d->philo[i].rfork = &(d->philo[i + 1].lfork);
 		i++;
 	}
-	if (!join_philo(d))
-		return (0);
 	return (1);
+}
+
+int	create_philo(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	while (i < d->n_philo)
+	{
+		if (pthread_create(&d->philo[i].thread, NULL, start_dinner, &(d->philo[i])))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	*start_dinner(void *ph)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)ph;
+	if (philo->pos % 2 == 0)
+		ft_usleep(philo->arg->t_eat / 10);
+	while (!condition(philo, 0))
+	{
+		routine(philo);
+		check_death(philo);
+		if (++philo->count_eat == philo->arg->n_eat)
+		{
+			pthread_mutex_lock(&philo->arg->m_stop);
+			if (philo->arg->n_philo != 1 && philo->arg->exit_val != 1
+				&& ++philo->arg->stop == philo->arg->n_philo)
+			{
+				pthread_mutex_unlock(&philo->arg->m_stop);
+				printf("Everyone is eating !");
+				condition(philo, 2);
+				return (NULL);
+			}
+			pthread_mutex_unlock(&philo->arg->m_stop);
+			return (NULL);
+		}
+	}
+	return (NULL);
 }
