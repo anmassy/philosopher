@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/27 21:59:21 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 22:22:29 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,8 @@ void	*start_dinner(void *ph)
 			if (philo->arg->n_philo != 1 && philo->arg->exit_val != 1
 				&& ++philo->arg->stop == philo->arg->n_philo)
 			{
-				pthread_mutex_unlock(&philo->arg->m_stop);
-				printf("Everyone is eating !");
+				printf("Everyone eating %d time(s) !\n", philo->arg->n_eat);
 				condition(philo, 2);
-				return (NULL);
 			}
 			pthread_mutex_unlock(&philo->arg->m_stop);
 			return (NULL);
