@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/27 16:35:55 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 21:59:21 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ int	init_val(t_data *d, char **av)
 	if (av[5])
 	{
 		d->n_eat = ft_atoi(av[5]);
-		if (d->n_eat <= 0)
+		if (d->n_eat < 1)
 			return(0);
 	}
-	if (d->n_philo < 1 || d->t_die <= 0 || d->t_eat <= 0 || d->t_sleep <= 0)
+	else
+		d->n_eat = -1;
+	if (d->n_philo < 1 || d->t_die < 1 || d->t_eat < 1 || d->t_sleep < 1)
 		return (0);
 	return (1);
 }
