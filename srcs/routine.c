@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/27 22:38:19 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/29 15:55:28 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_death(t_philo *philo)
 	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die)
 		|| philo->arg->n_philo == 1)
 	{
-		writen(philo, "is dead");
+		writen(philo, "died");
 		condition(philo, 1);
 	}
 	pthread_mutex_unlock(&philo->arg->m_stop);
@@ -78,4 +78,3 @@ void	routine(t_philo *philo)
 		pthread_mutex_unlock(&philo->lfork);
 	sleep_think(philo);
 }
-

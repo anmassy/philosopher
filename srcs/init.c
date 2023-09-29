@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/27 22:22:29 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/29 15:56:11 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	init_val(t_data *d, char **av)
 	{
 		d->n_eat = ft_atoi(av[5]);
 		if (d->n_eat < 1)
-			return(0);
+			return (0);
 	}
 	else
 		d->n_eat = -1;
@@ -79,7 +79,8 @@ int	create_philo(t_data *d)
 	i = 0;
 	while (i < d->n_philo)
 	{
-		if (pthread_create(&d->philo[i].thread, NULL, start_dinner, &(d->philo[i])))
+		if (pthread_create(&d->philo[i].thread, NULL, \
+			start_dinner, &(d->philo[i])))
 			return (0);
 		i++;
 	}
