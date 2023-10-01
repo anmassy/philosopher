@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/29 15:56:11 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/01 10:29:27 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	init_val(t_data *d, char **av)
 	{
 		d->n_eat = ft_atoi(av[5]);
 		if (d->n_eat < 1)
-			return (0);
+			return(0);
 	}
 	else
 		d->n_eat = -1;
@@ -79,8 +79,7 @@ int	create_philo(t_data *d)
 	i = 0;
 	while (i < d->n_philo)
 	{
-		if (pthread_create(&d->philo[i].thread, NULL, \
-			start_dinner, &(d->philo[i])))
+		if (pthread_create(&d->philo[i].thread, NULL, start_dinner, &(d->philo[i])))
 			return (0);
 		i++;
 	}
@@ -89,15 +88,19 @@ int	create_philo(t_data *d)
 
 void	*start_dinner(void *ph)
 {
-	t_philo	*philo;
+	t_philo		*philo;
+	pthread_t	t;
 
 	philo = (t_philo *)ph;
 	if (philo->pos % 2 == 0)
 		ft_usleep(philo->arg->t_eat / 10);
 	while (!condition(philo, 0))
 	{
+		if (pthread_create(&t, NULL, check_death, ph) != 0)
+			return (NULL);
 		routine(philo);
-		check_death(philo);
+		if (pthread_detach(t) != 0)
+			return (NULL);
 		if (++philo->count_eat == philo->arg->n_eat)
 		{
 			pthread_mutex_lock(&philo->arg->m_stop);

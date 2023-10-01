@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:28:45 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/27 20:49:05 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/01 10:31:21 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		*start_dinner(void *ph);
 
 /* routine.c */
 int			condition(t_philo *philo, int val);
-void		check_death(t_philo *philo);
+void		*check_death(void *ph);
 void		eat_time(t_philo *philo);
 void		sleep_think(t_philo *philo);
 void		routine(t_philo	*philo);
