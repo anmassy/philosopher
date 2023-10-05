@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/05 10:21:40 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/05 10:31:53 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,18 @@ int	create_philo(t_data *d)
 void	*start_dinner(void *ph)
 {
 	t_philo		*philo;
-	pthread_t	t;
 
 	philo = (t_philo *)ph;
 	if (philo->pos % 2 == 0)
-		ft_usleep(philo->arg->t_eat / 10);
+		ft_usleep(philo->arg->t_eat / 10, philo);
 	while (!condition(philo, 0))
 	{
-		if (pthread_create(&t, NULL, check_death, ph) != 0)
-			return (NULL);
+		// check_death(philo);
 		routine(philo);
-		if (pthread_detach(t) != 0)
-			return (NULL);
 		if (++philo->count_eat == philo->arg->n_eat)
 		{
 			pthread_mutex_lock(&philo->arg->m_stop);
-			if (philo->arg->n_philo != 1 && philo->arg->exit_val != 1
+			if (philo->arg->n_philo != 1 && philo->arg->exit_val == 0
 				&& ++philo->arg->stop == philo->arg->n_philo)
 			{
 				printf("Everyone eating %d time(s) !\n", philo->arg->n_eat);

@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:07:23 by anmassy           #+#    #+#             */
-/*   Updated: 2023/09/23 19:29:32 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/05 10:35:18 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,14 @@ long int	timer(void)
 	return (time);
 }
 
-void	ft_usleep(int ms)
+void	ft_usleep(int ms, t_philo *philo)
 {
 	long int	time;
 
 	time = timer();
 	while (timer() - time < ms)
+	{
+		check_death(philo);
 		usleep(ms / 10);
+	}
 }

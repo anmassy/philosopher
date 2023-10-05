@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:32:35 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/05 10:23:57 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/09/27 22:37:09 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	ft_destroy(t_data *d)
 	while (++i < d->n_philo)
 		pthread_join(d->philo[i].thread, NULL);
 	pthread_mutex_destroy(&d->writing);
-	pthread_mutex_destroy(&d->m_stop);
 	i = -1;
 	while (++i < d->n_philo)
 		pthread_mutex_destroy(&d->philo[i].lfork);
