@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:39:10 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/01 10:29:27 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/05 10:21:40 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	init_philo(t_data *d)
 	{
 		d->philo[i].pos = i + 1;
 		d->philo[i].count_eat = 0;
-		d->philo[i].last_eat = 0;
+		d->philo[i].last_eat = timer();
 		d->philo[i].arg = d;
 		d->philo[i].rfork = NULL;
 		if (pthread_mutex_init(&(d->philo[i].lfork), NULL) != 0)

@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/01 10:33:28 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/05 10:22:14 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	routine(t_philo *philo)
 	writen(philo, "has taken a fork");
 	if (philo->arg->n_philo == 1)
 	{
-		ft_usleep(philo->arg->t_die);
+		ft_usleep(philo->arg->t_die * 2);
 		return ;
 	}
 	pthread_mutex_lock(philo->rfork);
