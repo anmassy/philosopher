@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 10:17:05 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/05 10:57:23 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/09 17:03:24 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	check_death(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->arg->m_eat);
 	pthread_mutex_lock(&philo->arg->m_stop);
-	if ((!condition(philo, 0) && timer() - philo->last_eat > philo->arg->t_die))
+	if ((!condition(philo, 0)
+			&& timer() - philo->last_eat >= philo->arg->t_die))
 	{
 		writen(philo, "is died");
 		condition(philo, 1);
@@ -77,4 +78,3 @@ void	routine(t_philo *philo)
 		pthread_mutex_unlock(&philo->lfork);
 	sleep_think(philo);
 }
-

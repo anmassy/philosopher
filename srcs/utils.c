@@ -6,7 +6,7 @@
 /*   By: anmassy <anmassy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:07:23 by anmassy           #+#    #+#             */
-/*   Updated: 2023/10/05 10:35:18 by anmassy          ###   ########.fr       */
+/*   Updated: 2023/10/09 17:05:38 by anmassy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,16 @@ long int	timer(void)
 void	ft_usleep(int ms, t_philo *philo)
 {
 	long int	time;
+	int			mili;
 
 	time = timer();
-	while (timer() - time < ms)
+	if (philo->arg->t_sleep <= 110)
+		mili = ms + 8;
+	else
+		mili = ms;
+	while (timer() - time <= mili)
 	{
-		check_death(philo);
 		usleep(ms / 10);
+		check_death(philo);
 	}
 }
